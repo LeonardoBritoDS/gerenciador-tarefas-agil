@@ -1,10 +1,10 @@
-# 🎯 TaskFlow Ágil: Gerenciador de Tarefas Kanban
+# TaskFlow Ágil: Gerenciador de Tarefas Kanban
 
 Este projeto é um sistema web completo e didático para gerenciamento de tarefas utilizando a metodologia ágil Kanban. Ele foi desenvolvido como trabalho prático para a disciplina de **Engenharia de Software**, demonstrando boas práticas de desenvolvimento de software, padrões de arquitetura de software (MVC simplificado), automação de testes unitários e integração contínua (CI).
 
 ---
 
-## 📖 1. Objetivo do Projeto
+## 1. Objetivo do Projeto
 
 O objetivo deste projeto é fornecer uma aplicação web simples, limpa e funcional que auxilie equipes acadêmicas ou profissionais a gerenciarem suas demandas diárias por meio de um quadro visual ágil. O projeto demonstra na prática conceitos como:
 *   Persistência de dados local sem dependências de infraestrutura complexa (SQLite).
@@ -15,7 +15,7 @@ O objetivo deste projeto é fornecer uma aplicação web simples, limpa e funcio
 
 ---
 
-## 🌐 2. Escopo do Sistema
+## 2. Escopo do Sistema
 
 O sistema é centrado no ciclo de vida de uma **Tarefa** (Task) em um fluxo ágil simples. O escopo compreende:
 *   **Quadro Kanban Interativo:** Exibição das tarefas distribuídas nas colunas: **A Fazer**, **Em Progresso** e **Concluído**.
@@ -28,7 +28,7 @@ O sistema é centrado no ciclo de vida de uma **Tarefa** (Task) em um fluxo ági
 
 ---
 
-## ⚡ 3. Mudança de Escopo (Refinamento Ágil)
+## 3. Mudança de Escopo (Refinamento Ágil)
 
 > [!IMPORTANT]
 > **Explicação da Mudança de Escopo:**
@@ -40,7 +40,7 @@ O sistema é centrado no ciclo de vida de uma **Tarefa** (Task) em um fluxo ági
 
 ---
 
-## 🛠️ 4. Tecnologias Utilizadas
+## 4. Tecnologias Utilizadas
 
 A pilha tecnológica foi criteriosamente escolhida para garantir simplicidade de execução local, sem a necessidade de instalar servidores robustos de banco de dados:
 
@@ -53,7 +53,7 @@ A pilha tecnológica foi criteriosamente escolhida para garantir simplicidade de
 
 ---
 
-## 📁 5. Estrutura do Projeto
+## 5. Estrutura do Projeto
 
 A organização dos arquivos segue o padrão recomendado para desenvolvimento modular em Python/Flask:
 
@@ -87,7 +87,7 @@ gerenciador_tarefas_agil/
 
 ---
 
-## ⚙️ 6. Como Executar o Projeto Localmente
+## 6. Como Executar o Projeto Localmente
 
 Siga o passo a passo para colocar a aplicação em execução no seu computador:
 
@@ -113,13 +113,13 @@ Execute o comando abaixo para iniciar o servidor de desenvolvimento local:
 python src/app.py
 ```
 Acesse no seu navegador de internet o seguinte endereço:
-👉 **[http://127.0.0.1:5000](http://127.0.0.1:5000)**
+ **[http://127.0.0.1:5000](http://127.0.0.1:5000)**
 
 *(O arquivo de banco de dados `tasks.db` será gerado automaticamente na raiz do projeto na primeira execução)*
 
 ---
 
-## 🧪 7. Como Executar os Testes Automatizados
+##  7. Como Executar os Testes Automatizados
 
 Os testes automatizados cobrem a integridade dos dados, regras de validação (como impedimento de campos vazios) e o retorno HTTP correto de cada rota web.
 
@@ -134,7 +134,7 @@ pytest -v
 
 ---
 
-## 🚀 8. Integração Contínua com GitHub Actions
+##  8. Integração Contínua com GitHub Actions
 
 O projeto conta com o pipeline **GitHub Actions** configurado para automação da qualidade de código. 
 
@@ -154,4 +154,6 @@ graph TD
     F -->|Sucesso| G[Status Verde: Code Check Passed]
     F -->|Falha| H[Status Vermelho: Corrigir Erro]
 ```
-Se todos os testes passarem, o repositório exibe o selo verde de aprovação ✅. Caso ocorra alguma falha, a equipe é notificada imediatamente para corrigir o bug antes de realizar o merge.
+Se todos os testes passarem, o repositório exibe o selo verde de aprovação . Caso ocorra alguma falha, a equipe é notificada imediatamente para corrigir o bug antes de realizar o merge.
+
+Atualização realizada para melhoria da documentação do sistema.
