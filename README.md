@@ -157,3 +157,9 @@ graph TD
 Se todos os testes passarem, o repositório exibe o selo verde de aprovação . Caso ocorra alguma falha, a equipe é notificada imediatamente para corrigir o bug antes de realizar o merge.
 
 Atualização realizada para melhoria da documentação do sistema.
+
+## Melhorias Implementadas
+
+- Organização das tarefas por prioridade
+- Melhorias visuais na interface
+- Ajustes no fluxo de gerenciamento de tarefas
