@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Seção do Formulário de Criação de Tarefas -->
+<section class="form-section">
+    <h2>➕ Nova Tarefa</h2>
+    <form action="{{ url_for('create_task') }}" method="POST" class="task-form">
+        <!-- Título -->
+        <div class="form-group">
+            <label for="title">Título da Tarefa *</label>
+            <input type="text" id="title" name="title" class="form-control" placeholder="Ex: Criar modelo de dados" required>
+        </div>
+
+        <!-- Descrição -->
+        <div class="form-group">
+            <label for="description">Descrição</label>
+            <input type="text" id="description" name="description" class="form-control" placeholder="Breve resumo da atividade...">
+        </div>
+
+        <!-- Prioridade (Mudança de Escopo) -->
+        <div class="form-group">
+            <label for="priority">Prioridade</label>
+            <select id="priority" name="priority" class="form-control">
+                <option value="Baixa">🟢 Baixa</option>
+                <option value="Média" selected>🟡 Média</option>
+                <option value="Alta">🔴 Alta</option>
+            </select>
+        </div>
+
+        <!-- Status Inicial -->
+        <div class="form-group">
+            <label for="status">Coluna Inicial</label>
+            <select id="status" name="status" class="form-control">
+                <option value="A Fazer" selected>A Fazer</option>
+                <option value="Em Progresso">Em Progresso</option>
+                <option value="Concluído">Concluído</option>
+            </select>
+        </div>
+
+        <!-- Botão de Cadastro -->
+        <div class="form-group form-group-btn">
+            <button type="submit" class="btn">Adicionar</button>
+        </div>
+    </form>
+</section>
+
+<!-- Painel do Quadro Kanban -->
+<section class="kanban-board">
+    
+    <!-- Coluna A Fazer -->
+    <div class="kanban-column column-todo">
+        <div class="column-header">
+            <h2>A Fazer</h2>
+            <span class="task-count">{{ kanban.todo|length }}</span>
+        </div>
+        <div class="task-list">
+            {% if kanban.todo|length == 0 %}
+                <div class="empty-state">Sem tarefas por aqui.</div>
+            {% else %}
+                {% for task in kanban.todo %}
+                    <div class="task-card">
+                        <div class="task-card-header">
+                            <h3>{{ task.title }}</h3>
+                            <span class="priority-badge priority-{{ task.priority }}">{{ task.priority }}</span>
+                        </div>
+                        <p>{{ task.description if task.description else 'Sem descrição fornecida.' }}</p>
+                        <div class="task-card-meta">
+                            <span>📅 {{ task.created_at[:10] }}</span>
+                            <div class="task-actions">
+                                <!-- Mover para Em Progresso -->
+                                <form action="{{ url_for('update_status', task_id=task.id) }}" method="POST" style="display:inline;">
+                                    <input type="hidden" name="status" value="Em Progresso">
+                                    <button type="submit" class="btn-icon btn-icon-move" title="Iniciar Tarefa">➡️</button>
+                                </form>
+                                <!-- Editar -->
+                                <a href="{{ url_for('edit_task', task_id=task.id) }}" class="btn-icon" title="Editar">✏️</a>
+                                <!-- Deletar -->
+                                <form action="{{ url_for('delete_task', task_id=task.id) }}" method="POST" onsubmit="return confirm('Deseja realmente excluir esta tarefa?');" style="display:inline;">
+                                    <button type="submit" class="btn-icon btn-icon-delete" title="Excluir">🗑️</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Coluna Em Progresso -->
+    <div class="kanban-column column-doing">
+        <div class="column-header">
+            <h2>Em Progresso</h2>
+            <span class="task-count">{{ kanban.doing|length }}</span>
+        </div>
+        <div class="task-list">
+            {% if kanban.doing|length == 0 %}
+                <div class="empty-state">Nenhuma tarefa ativa.</div>
+            {% else %}
+                {% for task in kanban.doing %}
+                    <div class="task-card">
+                        <div class="task-card-header">
+                            <h3>{{ task.title }}</h3>
+                            <span class="priority-badge priority-{{ task.priority }}">{{ task.priority }}</span>
+                        </div>
+                        <p>{{ task.description if task.description else 'Sem descrição fornecida.' }}</p>
+                        <div class="task-card-meta">
+                            <span>📅 {{ task.created_at[:10] }}</span>
+                            <div class="task-actions">
+                                <!-- Voltar para A Fazer -->
+                                <form action="{{ url_for('update_status', task_id=task.id) }}" method="POST" style="display:inline;">
+                                    <input type="hidden" name="status" value="A Fazer">
+                                    <button type="submit" class="btn-icon" title="Voltar para A Fazer">⬅️</button>
+                                </form>
+                                <!-- Mover para Concluído -->
+                                <form action="{{ url_for('update_status', task_id=task.id) }}" method="POST" style="display:inline;">
+                                    <input type="hidden" name="status" value="Concluído">
+                                    <button type="submit" class="btn-icon btn-icon-move" title="Concluir Tarefa">✔️</button>
+                                </form>
+                                <!-- Editar -->
+                                <a href="{{ url_for('edit_task', task_id=task.id) }}" class="btn-icon" title="Editar">✏️</a>
+                                <!-- Deletar -->
+                                <form action="{{ url_for('delete_task', task_id=task.id) }}" method="POST" onsubmit="return confirm('Deseja realmente excluir esta tarefa?');" style="display:inline;">
+                                    <button type="submit" class="btn-icon btn-icon-delete" title="Excluir">🗑️</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Coluna Concluído -->
+    <div class="kanban-column column-done">
+        <div class="column-header">
+            <h2>Concluído</h2>
+            <span class="task-count">{{ kanban.done|length }}</span>
+        </div>
+        <div class="task-list">
+            {% if kanban.done|length == 0 %}
+                <div class="empty-state">Nenhuma tarefa finalizada.</div>
+            {% else %}
+                {% for task in kanban.done %}
+                    <div class="task-card">
+                        <div class="task-card-header">
+                            <h3 style="text-decoration: line-through; opacity: 0.6;">{{ task.title }}</h3>
+                            <span class="priority-badge priority-{{ task.priority }}">{{ task.priority }}</span>
+                        </div>
+                        <p style="opacity: 0.6;">{{ task.description if task.description else 'Sem descrição fornecida.' }}</p>
+                        <div class="task-card-meta">
+                            <span>📅 {{ task.created_at[:10] }}</span>
+                            <div class="task-actions">
+                                <!-- Reabrir (Mover para Em Progresso) -->
+                                <form action="{{ url_for('update_status', task_id=task.id) }}" method="POST" style="display:inline;">
+                                    <input type="hidden" name="status" value="Em Progresso">
+                                    <button type="submit" class="btn-icon" title="Reabrir Tarefa">⬅️</button>
+                                </form>
+                                <!-- Editar -->
+                                <a href="{{ url_for('edit_task', task_id=task.id) }}" class="btn-icon" title="Editar">✏️</a>
+                                <!-- Deletar -->
+                                <form action="{{ url_for('delete_task', task_id=task.id) }}" method="POST" onsubmit="return confirm('Deseja realmente excluir esta tarefa?');" style="display:inline;">
+                                    <button type="submit" class="btn-icon btn-icon-delete" title="Excluir">🗑️</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+</section>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Tarefa - TaskFlow{% endblock %}
+
+{% block content %}
+<section class="card-edit-container">
+    <h2>✏️ Editar Tarefa</h2>
+    
+    <form action="{{ url_for('edit_task', task_id=task.id) }}" method="POST">
+        <!-- Título -->
+        <div class="form-group">
+            <label for="edit-title">Título da Tarefa *</label>
+            <input type="text" id="edit-title" name="title" class="form-control" value="{{ task.title }}" required>
+        </div>
+
+        <!-- Descrição -->
+        <div class="form-group">
+            <label for="edit-description">Descrição</label>
+            <textarea id="edit-description" name="description" class="form-control" rows="4" placeholder="Detalhes específicos do que precisa ser feito...">{{ task.description }}</textarea>
+        </div>
+
+        <!-- Prioridade (Mudança de Escopo) -->
+        <div class="form-group">
+            <label for="edit-priority">Prioridade da Tarefa</label>
+            <select id="edit-priority" name="priority" class="form-control">
+                <option value="Baixa" {% if task.priority == 'Baixa' %}selected{% endif %}>🟢 Baixa</option>
+                <option value="Média" {% if task.priority == 'Média' %}selected{% endif %}>🟡 Média</option>
+                <option value="Alta" {% if task.priority == 'Alta' %}selected{% endif %}>🔴 Alta</option>
+            </select>
+        </div>
+
+        <!-- Status / Coluna do Kanban -->
+        <div class="form-group">
+            <label for="edit-status">Etapa do Kanban (Status)</label>
+            <select id="edit-status" name="status" class="form-control">
+                <option value="A Fazer" {% if task.status == 'A Fazer' %}selected{% endif %}>A Fazer</option>
+                <option value="Em Progresso" {% if task.status == 'Em Progresso' %}selected{% endif %}>Em Progresso</option>
+                <option value="Concluído" {% if task.status == 'Concluído' %}selected{% endif %}>Concluído</option>
+            </select>
+        </div>
+
+        <!-- Botões de Ação -->
+        <div class="edit-actions">
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancelar</a>
+            <button type="submit" class="btn">Salvar Alterações</button>
+        </div>
+    </form>
+</section>
+{% endblock %}
