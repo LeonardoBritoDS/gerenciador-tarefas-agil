@@ -105,7 +105,7 @@ header {
 }
 
 .alert {
-    padding: 16px 20px;
+    padding: 17px 21px;
     border-radius: var(--border-radius);
     margin-bottom: 12px;
     font-weight: 500;
